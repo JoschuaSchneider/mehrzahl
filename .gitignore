@@ -3,3 +3,6 @@ lib/
 
 # dependencies
 node_modules/
+
+# bench
+bench/
