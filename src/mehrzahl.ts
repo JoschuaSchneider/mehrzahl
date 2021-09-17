@@ -4,7 +4,8 @@ export type MehrzahlTaggedFormatter = (
 ) => string
 
 export type MehrzahlFormatterFactory = (
-  amount: number
+  amount: number,
+  delimiter?: string
 ) => MehrzahlTaggedFormatter
 
 export type InterpolationFunction = (plural: boolean, amount: number) => string
@@ -20,10 +21,27 @@ export type InterpolatableValue =
   | number
   | InterpolationFunction
 
+const DEFAULT_DELIMITER = "|"
+const GROUPING_REGEX = /\{(.*?)\}/g
+
 export const mz: MehrzahlFormatterFactory =
-  (amount) =>
+  (amount, delimiter = DEFAULT_DELIMITER) =>
   (strings, ...valuesToInterpolate) => {
     const isPlural = amount > 1
+
+    const formatGroupSyntax = (value: string) =>
+      value.replace(GROUPING_REGEX, (_, firstSubmatch) => {
+        if (typeof firstSubmatch === "string") {
+          const [singular, plural] = firstSubmatch.split(delimiter)
+          return isPlural ? plural : singular
+        }
+
+        return firstSubmatch
+      })
+
+    if (strings.length === 1) {
+      return formatGroupSyntax(strings[0]).replace("$value", amount.toString())
+    }
 
     const interpolatedValues = valuesToInterpolate.map((value) => {
       if (typeof value === "function") {
@@ -34,13 +52,14 @@ export const mz: MehrzahlFormatterFactory =
         return value[isPlural ? 1 : 0]?.toString() ?? ""
       }
 
-      // ToDo: Interpolate {|} syntax
       return value.toString()
     })
 
-    return strings.reduce(
-      (result, part, index) =>
-        result + part + (interpolatedValues[index] ?? ""),
-      ""
-    )
+    return formatGroupSyntax(
+      strings.reduce(
+        (result, part, index) =>
+          result + part + (interpolatedValues[index] ?? ""),
+        ""
+      )
+    ).replace("$value", amount.toString())
   }

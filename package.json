@@ -1,6 +1,6 @@
 {
   "name": "mehrzahl",
-  "version": "0.0.1-alpha2",
+  "version": "0.0.1-alpha3",
   "description": "Tagged template literals for singular/plural formatting",
   "source": "src/index.ts",
   "main": "lib/index.js",
