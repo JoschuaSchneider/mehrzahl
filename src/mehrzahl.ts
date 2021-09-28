@@ -39,7 +39,7 @@ const formatGroupSyntax = (
 export const mz: MehrzahlFormatterFactory =
   (amount, delimiter = DEFAULT_DELIMITER) =>
   (strings, ...valuesToInterpolate) => {
-    const isPlural = amount > 1
+    const isPlural = amount !== 1
     const amountString = amount.toString()
 
     const interpolatedValues = valuesToInterpolate.map((value) => {
