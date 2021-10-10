@@ -29,17 +29,14 @@ const str = mz(1)`There {was|were} $value person{|s} at this event.`
 const str = mz(5)`There {was|were} $value person{|s} at this event.`
 // str = "There were 5 persons at this event."
 ```
-#### Reversed
-
+#### Reversed usage
+You can use the exported `zm` function to create a function curried with the template first and then calling it with the amount:
 ```ts
 import { zm } from "mehrzahl"
-// import zm from "mehrzahl" // default import
 
 const template = zm`There {was|were} $value person{|s} at this event.`
-template(5)
-// There were 5 persons at this event.
-template(0)
-// There was 1 person at this event.
+template(5) // There were 5 persons at this event.
+template(0) // There was 1 person at this event.
 ```
 
 💡 `$value` is replaced by the amount specified.

@@ -8,15 +8,15 @@ export type MehrzahlFormatterFactory = (
   delimiter?: string
 ) => MehrzahlTaggedFormatter
 
-export type ZMTaggedFormatter = (
+export type ReversedMerzahlFormatter = (
   amount: number,
   delimiter?: string
 ) => string
 
-export type ZMFormatterFactory = (
+export type ReversedMehrzahlFormatterFactory = (
   strings: TemplateStringsArray,
   ...valuesToInterpolate: InterpolatableValue[]
-) => ZMTaggedFormatter
+) => ReversedMerzahlFormatter
 
 export type InterpolationFunction = (plural: boolean, amount: number) => string
 
@@ -49,7 +49,7 @@ const formatGroupSyntax = (
 export const mz: MehrzahlFormatterFactory =
   (amount, delimiter = DEFAULT_DELIMITER) =>
   (strings, ...valuesToInterpolate) => {
-    return mahrzahl(
+    return mehrzahl(
       amount,
       delimiter,
       strings,
@@ -58,10 +58,10 @@ export const mz: MehrzahlFormatterFactory =
   }
 
   // reverse of mz
-  export const zm: ZMFormatterFactory =
+  export const zm: ReversedMehrzahlFormatterFactory =
   (strings, ...valuesToInterpolate) =>
   (amount, delimiter = DEFAULT_DELIMITER) => {
-    return mahrzahl(
+    return mehrzahl(
       amount,
       delimiter,
       strings,
@@ -69,7 +69,7 @@ export const mz: MehrzahlFormatterFactory =
     )
   }
 
-  const mahrzahl = (
+  const mehrzahl = (
     amount: number,
     delimiter: string,
     strings: TemplateStringsArray,
