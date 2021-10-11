@@ -1,1 +1,1 @@
-export { mz as default, mz } from "./mehrzahl"
+export { mz as default, mz, zm } from "./mehrzahl"
